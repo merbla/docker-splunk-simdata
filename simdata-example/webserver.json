@@ -1,0 +1,85 @@
+{
+  "update_interval": 313,
+  "time_unit": "MILLIS",
+  "entities": [
+    {
+      "entity_name": "User",
+      "count": 10,
+      "controls": [
+        {
+          "varname": "id",
+          "type": "textbox"
+        }
+      ]
+    },
+    {
+      "entity_name": "WebServer",
+      "count": 2,
+      "controls": [
+        {
+          "varname": "maxPendingRequests",
+          "type": "slider",
+          "min": 0,
+          "max": 100
+        }
+      ]
+    },
+    {
+      "entity_name": "Database",
+      "count": 1,
+      "initial_state":
+      {
+        "id":"db1.splunk.com"
+      }
+    },
+    {
+      "entity_name": "Database",
+      "count": 1,
+      "initial_state":
+      {
+        "id":"db2.splunk.com"
+      }
+    }
+  ],
+  "entity_wirings": [
+    {
+      "from": "User",
+      "to": "WebServer",
+      "message_type": "WebRequest",
+      "wiring_type": "any",
+      "filter": null
+    },
+    {
+      "from": "WebServer",
+      "to": "Database",
+      "message_type": "DatabaseRequest",
+      "wiring_type": "any",
+      "filter": null
+    },
+    {
+      "from": "Database",
+      "to": "WebServer",
+      "message_type": "DatabaseReply",
+      "wiring_type": "any",
+      "filter": null
+    },
+    {
+      "from": "Database",
+      "to": "Database",
+      "message_type": "UpdateDatabaseMetric",
+      "wiring_type": "any",
+      "filter": null
+    }
+  ],
+  "transports": [
+    {
+      "name": "SplunkHEC",
+      "config": {
+        "uri": "http://splunk:8088",
+        "token": "00112233-4455-6677-8899-AABBCCDDEEFF",
+        "default_index": "default"
+      }
+    }
+  ],
+  "default_transport": "SplunkHEC"
+}
