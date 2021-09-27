@@ -1,15 +1,16 @@
 version: '3'
 services:
   splunk:
-    build: ./splunk 
-    image: simdata-splunk
+    image: ${SPLUNK_IMAGE:-splunk/splunk:latest}
+    container_name: simdata-splunk
     ports:
       - 8000:8000
       - 8088:8088
       - 8089:8089
     environment:
-      SPLUNK_START_ARGS: "--accept-license --answer-yes  --seed-passwd changeme"
-      SPLUNK_USER: "root"
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_HEC_TOKEN=00112233-4455-6677-8899-AABBCCDDEEFF
+      - SPLUNK_PASSWORD=changeme
   simdata:
     depends_on:
       - "splunk"
